@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Remove PC Mouse</title>
+
+    <style>
+        body{
+            margin: 0;
+            border: 0;
+            background: linear-gradient(45deg, #000000 0%, #222 100%);
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            width: 100vw;
+            height: 100vh;
+        }
+        #pad{
+            border: 1px solid white;
+            border-radius: 10px;
+            padding: 10px;
+
+            width: 90vw; 
+            max-width: 500px;
+            max-height: 900px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            gap: 10px;
+        }
+        #pad button{
+            background-color: rgb(32, 32, 32);
+            color: rgb(221, 221, 221);
+
+            border: 1px solid white;
+            border-radius: 10px;
+            padding: 20px 40px;
+
+        }
+        #pad button:active{
+            background-color: rgb(50, 50, 50);
+        }
+        #pad div{
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+    </style>
+
+</head>
+<body>
+    <div id="pad">
+        <button data-direction="up" class="direction-button">UP</button>
+        <div>
+            <button data-direction="left" class="direction-button">LEFT</button>
+            <button data-direction="right" class="direction-button">RIGHT</button>
+        </div>
+        <button data-direction="down" class="direction-button">DOWN</button>
+
+        <div>
+            <button data-button="left" class="mouse-button">LEFT MOUSE BUTTON</button>
+            <button data-button="right" class="mouse-button">RIGHT MOUSE BUTTON</button>
+        </div> 
+        
+    </div>
+    
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        const socket = io();
+
+        // Movements
+        const emitDirection = (direction) => socket.emit('moveTo', direction)
+        const directionButtons = document.querySelectorAll(".direction-button")
+
+        directionButtons.forEach(button => {
+            button.addEventListener("touchstart", () => {
+                let direction = button.getAttribute('data-direction');
+                emitDirection(direction);
+            })
+        })
+
+        // Mouse buttons 
+        const emitButton = (button) => socket.emit('button', button)
+        const mouseButtons = document.querySelectorAll(".mouse-button")
+
+        mouseButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                let mButton = button.getAttribute('data-button');
+                emitButton(mButton);
+            })
+        })
+
+        
+    </script>
+
+</body>
+</html>

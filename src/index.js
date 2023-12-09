@@ -1,25 +1,20 @@
+require('dotenv').config();
 const server = require("./server")
 const { Server } = require("socket.io")
 const robot = require("robotjs");
 
 const io = new Server(server)
-
-const coordinates = {
-    up:    { x: 0,   y: -10 },
-    right: { x: 10,  y: 0 },
-    left:  { x: -10, y: 0 },
-    down:  { x: 0,   y: 10 }
-};
+const sensitivity = process.env.SENSITIVITY;
 
 io.on('connection', (socket) => {
-    socket.on('moveTo', (direction) => {
+    socket.on('move', (coordinates) => {
 
-        console.log(`[SOCKET]: Received "move to ${direction}".`)
+        console.log(`[SOCKET]: Received "move to ${JSON.stringify(coordinates)}".`)
     
         let mousePositions = robot.getMousePos();
         mousePositions = {
-            x: mousePositions.x + coordinates[direction].x,
-            y: mousePositions.y + coordinates[direction].y
+            x: mousePositions.x + coordinates.x * sensitivity,
+            y: mousePositions.y + (coordinates.y * sensitivity)
         }
     
         robot.moveMouse(mousePositions.x, mousePositions.y)

@@ -3,20 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Remove PC Mouse</title>
+    <title>Remote PC Controls
+    </title>
 
     <style>
         body{
             margin: 0;
             border: 0;
-            background: linear-gradient(45deg, #000000 0%, #222 100%);
+            padding: 20px 0px;
+            background: #222;
 
             display: flex;
             align-items: center;
             justify-content: center;
 
             width: 100vw;
-            height: 100vh;
         }
         #pad{
             border: 1px solid white;
@@ -50,17 +51,17 @@
             align-items: center;
             gap: 10px;
         }
+        #touchpad{
+            width: 100%;
+            height: 500px;
+            border: 1px solid white;
+        }
     </style>
 
 </head>
 <body>
     <div id="pad">
-        <button data-direction="up" class="direction-button">UP</button>
-        <div>
-            <button data-direction="left" class="direction-button">LEFT</button>
-            <button data-direction="right" class="direction-button">RIGHT</button>
-        </div>
-        <button data-direction="down" class="direction-button">DOWN</button>
+        <div id="touchpad"></div>
 
         <div>
             <button data-button="left" class="mouse-button">LEFT MOUSE BUTTON</button>
@@ -72,16 +73,31 @@
     <script src="/socket.io/socket.io.js"></script>
     <script>
         const socket = io();
+        const emitCoordinates = (coordinates) => socket.emit('move', coordinates)
 
-        // Movements
-        const emitDirection = (direction) => socket.emit('moveTo', direction)
-        const directionButtons = document.querySelectorAll(".direction-button")
+        let positions;
 
-        directionButtons.forEach(button => {
-            button.addEventListener("touchstart", () => {
-                let direction = button.getAttribute('data-direction');
-                emitDirection(direction);
+        const touchpad = document.getElementById('touchpad')
+        touchpad.addEventListener('touchstart', event => {
+            let touch = event.touches[0]
+            positions = {
+                x: touch.clientX,
+                y: touch.clientY
+            }
+        })
+
+        touchpad.addEventListener('touchmove', (event) => {
+            let touch = event.touches[0];
+
+            emitCoordinates({
+                x: Math.floor(positions.x - touch.clientX)* -1,
+                y: Math.floor(positions.y - touch.clientY)* -1,
             })
+
+            positions = {
+                x: touch.clientX,
+                y: touch.clientY
+            }
         })
 
         // Mouse buttons 
@@ -95,7 +111,6 @@
             })
         })
 
-        
     </script>
 
 </body>

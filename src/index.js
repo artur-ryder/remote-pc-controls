@@ -13,7 +13,7 @@ io.on('connection', (socket) => {
     
         let mousePositions = robot.getMousePos();
         mousePositions = {
-            x: mousePositions.x + coordinates.x * sensitivity,
+            x: mousePositions.x + (coordinates.x * sensitivity),
             y: mousePositions.y + (coordinates.y * sensitivity)
         }
     

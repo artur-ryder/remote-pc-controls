@@ -3,7 +3,9 @@ const server = require("./server")
 const { Server } = require("socket.io")
 const robot = require("robotjs");
 
-const io = new Server(server)
+const io = new Server(server, {
+    httpCompression: false,
+})
 const sensitivity = process.env.SENSITIVITY;
 
 io.on('connection', (socket) => {

@@ -17,6 +17,8 @@
             align-items: center;
             justify-content: center;
 
+            touch-action: none;
+
             width: 100vw;
         }
         #pad{
@@ -75,29 +77,24 @@
         const socket = io();
         const emitCoordinates = (coordinates) => socket.emit('move', coordinates)
 
-        let positions;
+        const positions = {};
 
         const touchpad = document.getElementById('touchpad')
-        touchpad.addEventListener('touchstart', event => {
-            let touch = event.touches[0]
-            positions = {
-                x: touch.clientX,
-                y: touch.clientY
-            }
+        touchpad.addEventListener('touchstart', event => {         
+            positions["x"] = event.touches[0].clientX;
+            positions["y"] = event.touches[0].clientY;
         })
 
         touchpad.addEventListener('touchmove', (event) => {
-            let touch = event.touches[0];
+            const touch = event.touches[0];
 
             emitCoordinates({
-                x: Math.floor(positions.x - touch.clientX)* -1,
-                y: Math.floor(positions.y - touch.clientY)* -1,
+                x: Math.floor(positions["x"] - touch.clientX)* -1,
+                y: Math.floor(positions["y"] - touch.clientY)* -1,
             })
 
-            positions = {
-                x: touch.clientX,
-                y: touch.clientY
-            }
+            positions["x"] = touch.clientX;
+            positions["y"] = touch.clientY; 
         })
 
         // Mouse buttons 
@@ -106,7 +103,7 @@
 
         mouseButtons.forEach(button => {
             button.addEventListener('click', () => {
-                let mButton = button.getAttribute('data-button');
+                const mButton = button.getAttribute('data-button');
                 emitButton(mButton);
             })
         })

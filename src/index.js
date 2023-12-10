@@ -13,8 +13,8 @@ io.on('connection', (socket) => {
         console.log(`[SOCKET]: Received ${JSON.stringify(coordinates)}".`)
     
         const mousePositions = robot.getMousePos();
-        mousePositions[x] = mousePositions.x + (coordinates.x * sensitivity);
-        mousePositions[y] = mousePositions.y + (coordinates.y * sensitivity);
+        mousePositions["x"] = mousePositions.x + (coordinates.x * sensitivity);
+        mousePositions["y"] = mousePositions.y + (coordinates.y * sensitivity);
         
         robot.moveMouse(...Object.values(mousePositions));
     })

@@ -10,7 +10,7 @@ const sensitivity = process.env.SENSITIVITY;
 
 io.on('connection', (socket) => {
     socket.on('move', (coordinates) => {
-        console.log(`[SOCKET]: Received ${JSON.stringify(coordinates)}".`)
+        console.log(`[SOCKET]: Received ${JSON.stringify(coordinates)}.`)
     
         const mousePositions = robot.getMousePos();
         mousePositions["x"] = mousePositions.x + (coordinates.x * sensitivity);

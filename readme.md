@@ -17,9 +17,10 @@ npm start
 ```
 
 # DotEnv
-The `.env` file has 2 atributes
+The `.env` file has 2 attributes
 
 `SENSITIVITY` - Sets the touchpad sensitivity.
+
 `SERVER_PORT` - Sets the webserver port.
 
 ## To add

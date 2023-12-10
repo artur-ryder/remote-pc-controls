@@ -10,16 +10,13 @@ const sensitivity = process.env.SENSITIVITY;
 
 io.on('connection', (socket) => {
     socket.on('move', (coordinates) => {
-
-        console.log(`[SOCKET]: Received "move to ${JSON.stringify(coordinates)}".`)
+        console.log(`[SOCKET]: Received ${JSON.stringify(coordinates)}".`)
     
-        let mousePositions = robot.getMousePos();
-        mousePositions = {
-            x: mousePositions.x + (coordinates.x * sensitivity),
-            y: mousePositions.y + (coordinates.y * sensitivity)
-        }
-    
-        robot.moveMouse(mousePositions.x, mousePositions.y)
+        const mousePositions = robot.getMousePos();
+        mousePositions[x] = mousePositions.x + (coordinates.x * sensitivity);
+        mousePositions[y] = mousePositions.y + (coordinates.y * sensitivity);
+        
+        robot.moveMouse(...Object.values(mousePositions));
     })
 
     socket.on('button', (button) => {

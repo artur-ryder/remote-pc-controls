@@ -26,6 +26,8 @@ The `.env` file has 2 attributes
 ## To add
 - [x] Real Trackpad
 - [ ] Scroll
+- [ ] Security
+- [ ] Optimization
 - [ ] Keyboard
 - [ ] Login System
 - [ ] Music Controls
